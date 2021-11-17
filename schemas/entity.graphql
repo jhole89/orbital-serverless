@@ -1,0 +1,16 @@
+schema {
+    query: EntityQuery
+}
+
+type Entity {
+    id: ID!
+    name: String!
+    context: String!
+    connections(id: ID, context: String = "owns"): [Entity!]!
+}
+
+type EntityQuery {
+    connections(id: ID, context: String = "owns"): [Entity!]!
+    entity(id: ID!): Entity
+    list: [Entity!]!
+}

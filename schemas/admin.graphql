@@ -1,0 +1,7 @@
+schema {
+    query: AdminQuery
+}
+
+type AdminQuery {
+    rebuild: String
+}
