@@ -25,3 +25,11 @@ variable "lambda_zip" {
 variable "db_endpoint" {
   type = string
 }
+
+variable "security_group_ids" {
+  type = set(string)
+}
+
+variable "subnet_ids" {
+  type = set(string)
+}
