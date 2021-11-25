@@ -18,6 +18,10 @@ variable "appsync_iam_role_arn" {
   type = string
 }
 
-variable "image" {
+variable "lambda_zip" {
+  type = string
+}
+
+variable "db_endpoint" {
   type = string
 }

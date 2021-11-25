@@ -8,7 +8,7 @@ terraform {
 }
 
 module "orbital" {
-  source = "../"
+  source     = "../"
   account_id = var.account_id
-  region = var.region
+  region     = var.region
 }
