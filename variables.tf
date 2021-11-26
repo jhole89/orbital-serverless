@@ -8,6 +8,16 @@ variable "account_id" {
   type        = number
 }
 
+variable "vpc_security_group_ids" {
+  description = "VPC SG IDs to launch services in."
+  type        = set(string)
+}
+
+variable "subnet_ids" {
+  description = "Subnet IDs to launch services in."
+  type        = set(string)
+}
+
 locals {
   project_name = "Orbital"
 }
