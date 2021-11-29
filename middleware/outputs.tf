@@ -7,5 +7,5 @@ output "appsync_api_url" {
 }
 
 output "datasource_name" {
-  value = aws_appsync_datasource.neptune-integration.name
+  value = aws_appsync_datasource.neptune_integration.name
 }

@@ -33,3 +33,7 @@ variable "security_group_ids" {
 variable "subnet_ids" {
   type = set(string)
 }
+
+variable "log_retention_days" {
+  type = number
+}
