@@ -1,11 +1,14 @@
-terraform {
-  backend "remote" {
-    organization = "Manta-Innovations"
-    workspaces {
-      prefix = "orbital-"
+provider "aws" {
+  region = var.region
+
+  default_tags {
+    tags = {
+      Terraform = "true",
+      Service   = "Orbital"
     }
   }
 }
+
 
 data "aws_vpc" "default" {
   default = true

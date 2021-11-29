@@ -18,6 +18,12 @@ variable "subnet_ids" {
   type        = set(string)
 }
 
+variable "log_retention_days" {
+  description = "Number of days to store logs in Cloudwatch"
+  type        = number
+  default     = 7
+}
+
 locals {
   project_name = "Orbital"
 }

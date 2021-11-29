@@ -18,6 +18,20 @@ resource "aws_iam_role" "lambda" {
 EOF
 }
 
+resource "aws_iam_role_policy" "lambda" {
+  name   = "${aws_iam_role.lambda.name}Policy"
+  role   = aws_iam_role.lambda.id
+  policy = data.aws_iam_policy_document.lambda.json
+}
+
+data "aws_iam_policy_document" "lambda" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.manage_eni.json,
+    data.aws_iam_policy_document.create_logs.json,
+  ]
+}
+
+
 resource "aws_iam_role" "appsync" {
   name = "${local.project_name}AppsyncRole"
 
@@ -35,4 +49,17 @@ resource "aws_iam_role" "appsync" {
   ]
 }
 EOF
+}
+
+resource "aws_iam_role_policy" "appsync" {
+  name   = "${aws_iam_role.appsync.name}Policy"
+  role   = aws_iam_role.appsync.id
+  policy = data.aws_iam_policy_document.appsync.json
+}
+
+data "aws_iam_policy_document" "appsync" {
+  source_policy_documents = [
+    data.aws_iam_policy_document.invoke_lambda.json,
+    data.aws_iam_policy_document.create_logs.json,
+  ]
 }
