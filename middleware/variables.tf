@@ -1,12 +1,20 @@
-variable "endpoint_name" {
-  type = string
-}
-
 variable "project" {
   type = string
 }
 
-variable "schema" {
+variable "appsync_api_id" {
+  type = string
+}
+
+variable "appsync_field" {
+  type = string
+}
+
+variable "env_vars" {
+  type = map(string)
+}
+
+variable "appsync_iam_role_arn" {
   type = string
 }
 
@@ -14,19 +22,7 @@ variable "lambda_iam_role_arn" {
   type = string
 }
 
-variable "appsync_iam_role_arn" {
-  type = string
-}
-
-variable "lambda_zip" {
-  type = string
-}
-
-variable "db_endpoint" {
-  type = string
-}
-
-variable "security_group_ids" {
+variable "vpc_security_group_ids" {
   type = set(string)
 }
 
@@ -36,4 +32,8 @@ variable "subnet_ids" {
 
 variable "log_retention_days" {
   type = number
+}
+
+locals {
+  name = "${var.project}${title(var.appsync_field)}"
 }
