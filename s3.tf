@@ -1,5 +1,5 @@
 resource "aws_s3_bucket" "query_results" {
-  bucket        = "${lower(local.project_name)}-queries.${var.region}.${var.account_id}"
+  bucket        = "${lower(local.project_name)}-queries.${var.region}.${data.aws_caller_identity.this.account_id}"
   force_destroy = "true"
 }
 

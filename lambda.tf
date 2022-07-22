@@ -6,11 +6,11 @@ resource "aws_lambda_function" "admin" {
   filename         = data.archive_file.code.output_path
   source_code_hash = filebase64sha256(data.archive_file.code.output_path)
   timeout          = 900
-  memory_size      = 1024
+  memory_size      = 128
 
   vpc_config {
-    security_group_ids = var.vpc_security_group_ids
-    subnet_ids         = var.subnet_ids
+    security_group_ids = data.aws_security_groups.default.ids
+    subnet_ids         = data.aws_subnets.default.ids
   }
 
   environment {
@@ -36,10 +36,3 @@ resource "aws_cloudwatch_log_group" "lambda" {
   name              = "/aws/lambda/${aws_lambda_function.admin.function_name}"
   retention_in_days = var.log_retention_days
 }
-
-#resource "aws_lambda_event_source_mapping" "lambda" {
-#  function_name = aws_lambda_function.admin.function_name
-#  event_source_arn = aws_sqs_queue.admin.arn
-#  batch_size = 1
-#  enabled = true
-#}

@@ -8,7 +8,7 @@ import (
 func TestConfig_getConf(t *testing.T) {
 
 	var conf Config
-	conf.getConf()
+	conf.GetConf()
 
 	asserter := assert.New(t)
 

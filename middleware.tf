@@ -12,7 +12,7 @@ module "entity_middleware" {
   appsync_iam_role_arn = aws_iam_role.appsync.arn
   lambda_iam_role_arn  = aws_iam_role.lambda.arn
 
-  vpc_security_group_ids = var.vpc_security_group_ids
-  subnet_ids             = var.subnet_ids
+  vpc_security_group_ids = data.aws_security_groups.default.ids
+  subnet_ids             = data.aws_subnets.default.ids
   log_retention_days     = var.log_retention_days
 }

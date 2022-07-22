@@ -18,16 +18,6 @@ data "aws_iam_policy_document" "assume_appsync" {
   }
 }
 
-data "aws_iam_policy_document" "assume_api_gw" {
-  statement {
-    actions = ["sts:AssumeRole"]
-    principals {
-      identifiers = ["apigateway.amazonaws.com"]
-      type        = "Service"
-    }
-  }
-}
-
 data "aws_iam_policy_document" "manage_eni" {
   statement {
     actions = [
@@ -51,7 +41,7 @@ data "aws_iam_policy_document" "create_logs" {
       "logs:PutLogEvents"
     ]
     resources = [
-      "arn:aws:logs:*:*:*"
+      "arn:aws:logs:${var.region}:${data.aws_caller_identity.this.account_id}:*",
     ]
   }
 }
@@ -62,7 +52,7 @@ data "aws_iam_policy_document" "invoke_lambda" {
       "lambda:InvokeFunction"
     ]
     resources = [
-      "arn:aws:lambda:${var.region}:${var.account_id}:function:*"
+      "arn:aws:lambda:${var.region}:${data.aws_caller_identity.this.account_id}:function:*",
     ]
   }
 }
@@ -77,7 +67,7 @@ data "aws_iam_policy_document" "query_athena" {
     ]
 
     resources = [
-      "arn:aws:athena:${var.region}:${var.account_id}:workgroup/*"
+      "arn:aws:athena:${var.region}:${data.aws_caller_identity.this.account_id}:workgroup/*",
     ]
   }
   statement {
@@ -89,9 +79,9 @@ data "aws_iam_policy_document" "query_athena" {
       "glue:GetPartitions",
     ]
     resources = [
-      "arn:aws:glue:${var.region}:${var.account_id}:catalog",
-      "arn:aws:glue:${var.region}:${var.account_id}:database/*",
-      "arn:aws:glue:${var.region}:${var.account_id}:table/*/*",
+      "arn:aws:glue:${var.region}:${data.aws_caller_identity.this.account_id}:catalog",
+      "arn:aws:glue:${var.region}:${data.aws_caller_identity.this.account_id}:database/*",
+      "arn:aws:glue:${var.region}:${data.aws_caller_identity.this.account_id}:table/*/*",
     ]
   }
 }
@@ -135,29 +125,6 @@ data "aws_iam_policy_document" "access_kms" {
     ]
     resources = [
       aws_kms_key.s3.arn,
-#      aws_kms_key.queue.arn,
     ]
-  }
-}
-
-data "aws_iam_policy_document" "access_sqs" {
-  statement {
-    actions = [
-      "sqs:ChangeMessageVisibility",
-      "sqs:ChangeMessageVisibilityBatch",
-      "sqs:CreateQueue",
-      "sqs:DeleteMessage",
-      "sqs:GetQueueAttributes",
-      "sqs:GetQueueUrl",
-      "sqs:ListDeadLetterSourceQueues",
-      "sqs:ListQueues",
-      "sqs:ListQueueTags",
-      "sqs:PurgeQueue",
-      "sqs:ReceiveMessage",
-      "sqs:SendMessageBatch",
-      "sqs:SendMessage",
-      "sqs:SetQueueAttributes",
-    ]
-    resources = ["arn:aws:sqs:${var.region}:${var.account_id}:*"]
   }
 }

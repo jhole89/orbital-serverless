@@ -2,7 +2,6 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	runtime "github.com/aws/aws-lambda-go/lambda"
 	framework "github.com/jhole89/orbital-framework"
@@ -11,18 +10,13 @@ import (
 	"os"
 )
 
-type admin struct {
-	Command string `json:"command"`
-}
-
-func (a *admin) fromJson(s string) error {
-	return json.Unmarshal([]byte(s), &a)
-}
-
 var (
-	conf     framework.Config
-	adminMsg admin
+	conf framework.Config
 )
+
+type Response struct {
+	Message string `json:"message"`
+}
 
 func handleRequest(ctx context.Context) (interface{}, error) {
 
@@ -44,28 +38,13 @@ func handleRequest(ctx context.Context) (interface{}, error) {
 		return nil, err
 	}
 
-	//log.Printf("event: event%v\n", event)
-
-	//for _, msg := range event.Records {
-	//	if err = adminMsg.fromJson(msg.Body); err != nil {
-	//		log.Printf("Unable to unmarshall: %s", err)
-	//		return nil, err
-	//	}
-	//	if adminMsg.Command == "rebuild" {
 	if err = framework.ReIndex(graph, conf.Lakes); err != nil {
 		log.Println(err)
 		graph.Close()
 		return nil, err
 	}
 	graph.Close()
-	return "started", nil
-	//	} else {
-	//		errMsg := fmt.Sprintf("unknown Command [%s] found in Body", adminMsg.Command)
-	//		log.Println(errMsg)
-	//		return nil, fmt.Errorf(errMsg)
-	//	}
-	//}
-	//return nil, nil
+	return Response{Message: "Finished"}, nil
 }
 
 func main() {

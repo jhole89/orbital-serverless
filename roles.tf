@@ -17,7 +17,6 @@ data "aws_iam_policy_document" "lambda" {
     data.aws_iam_policy_document.read_s3.json,
     data.aws_iam_policy_document.write_s3.json,
     data.aws_iam_policy_document.access_kms.json,
-    data.aws_iam_policy_document.access_sqs.json,
   ]
 }
 
@@ -36,25 +35,5 @@ data "aws_iam_policy_document" "appsync" {
   source_policy_documents = [
     data.aws_iam_policy_document.invoke_lambda.json,
     data.aws_iam_policy_document.create_logs.json,
-  ]
-}
-
-resource "aws_iam_role" "api_gw" {
-  name = "${local.project_name}ApiGwRole"
-  assume_role_policy = data.aws_iam_policy_document.assume_api_gw.json
-}
-
-resource "aws_iam_role_policy" "api_gw" {
-  name   = "${aws_iam_role.api_gw.name}Policy"
-  role   = aws_iam_role.api_gw.id
-  policy = data.aws_iam_policy_document.api_gw.json
-}
-
-data "aws_iam_policy_document" "api_gw" {
-  source_policy_documents = [
-    data.aws_iam_policy_document.invoke_lambda.json,
-    data.aws_iam_policy_document.create_logs.json,
-    data.aws_iam_policy_document.access_sqs.json,
-    data.aws_iam_policy_document.access_kms.json,
   ]
 }
