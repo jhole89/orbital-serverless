@@ -1,43 +1,10 @@
-resource "aws_appsync_resolver" "list_query" {
-  kind        = "UNIT"
-  api_id      = module.middleware["Entity"].appsync_api_id
-  data_source = module.middleware["Entity"].datasource_name
-  type        = "EntityQuery"
-  field       = "list"
+resource "aws_appsync_graphql_api" "entity" {
+  authentication_type = "AWS_IAM"
+  name                = "${local.project_name}EntityApi"
+  schema              = file("${path.module}/schemas/entity.graphql")
 
-  request_template  = file("${path.module}/resolvers/entity_list.vtl")
-  response_template = file("${path.module}/resolvers/response.vtl")
-}
-
-resource "aws_appsync_resolver" "connections_query" {
-  kind        = "UNIT"
-  api_id      = module.middleware["Entity"].appsync_api_id
-  data_source = module.middleware["Entity"].datasource_name
-  type        = "EntityQuery"
-  field       = "connections"
-
-  request_template  = file("${path.module}/resolvers/entity_connections.vtl")
-  response_template = file("${path.module}/resolvers/response.vtl")
-}
-
-resource "aws_appsync_resolver" "entity_by_id_query" {
-  kind        = "UNIT"
-  api_id      = module.middleware["Entity"].appsync_api_id
-  data_source = module.middleware["Entity"].datasource_name
-  type        = "EntityQuery"
-  field       = "entity"
-
-  request_template  = file("${path.module}/resolvers/entity_by_id.vtl")
-  response_template = file("${path.module}/resolvers/response.vtl")
-}
-
-resource "aws_appsync_resolver" "admin_rebuild_query" {
-  kind        = "UNIT"
-  api_id      = module.middleware["Admin"].appsync_api_id
-  data_source = module.middleware["Admin"].datasource_name
-  type        = "AdminQuery"
-  field       = "rebuild"
-
-  request_template  = file("${path.module}/resolvers/admin_rebuild.vtl")
-  response_template = file("${path.module}/resolvers/response.vtl")
+  log_config {
+    cloudwatch_logs_role_arn = aws_iam_role.appsync.arn
+    field_log_level          = "ERROR"
+  }
 }

@@ -1,5 +1,11 @@
 schema {
-    query: EntityQuery
+    query: Query
+}
+
+type Query {
+    connections(id: ID, context: String = "owns"): [Entity!]!
+    getEntity(id: ID!): Entity
+    listEntity: [Entity!]!
 }
 
 type Entity {
@@ -7,10 +13,4 @@ type Entity {
     name: String!
     context: String!
     connections(id: ID, context: String = "owns"): [Entity!]!
-}
-
-type EntityQuery {
-    connections(id: ID, context: String = "owns"): [Entity!]!
-    entity(id: ID!): Entity
-    list: [Entity!]!
 }
